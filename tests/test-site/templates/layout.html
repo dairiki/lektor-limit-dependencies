@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="{{ '/static/style.css'|url }}">
+<title>{% block title %}Welcome{% endblock %} — Test Site</title>
+<body>
+  <header>
+    <h1>Test Site</h1>
+    {% for child in site.root.children.limit(1)|limit_dependencies %}
+      <nav>
+        <p>
+          The first child of the root page is
+          <a href="{{ child|url }}">{{ child.title }}</a>.
+        </p>
+      </nav>
+    {% endfor %}
+  </header>
+  <div class="page">
+    {% block body %}{% endblock %}
+  </div>
+  <footer>
+    &copy; Copyright 2020 by Jeff Dairiki.
+  </footer>
+</body>
