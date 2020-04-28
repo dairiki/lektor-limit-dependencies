@@ -28,6 +28,7 @@ from lektor_limit_dependencies import (
     ('this.children.order_by("-title")', ['projects', 'about']),
     ('this.children.order_by("title").limit(1)', ['about']),
     ('this.children.order_by("title").limit(1).offset(1)', ['projects']),
+    ('this.children.filter(F.title == "missing")', []),
     ])
 def _test_data(request):
     return request.param

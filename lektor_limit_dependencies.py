@@ -56,7 +56,7 @@ def resolve_virtual_path(record, pieces):
     if len(pieces) == 1 and record == pad.root:
         def creator():
             query = deserialize_query(pad, pieces[0])
-            if query:
+            if query is not None:
                 return QueryResults(query, id_=pieces[0])
         virtual_path = '{}/{}'.format(VIRTUAL_PATH_PREFIX, pieces[0])
         return get_or_create_virtual(pad.root, virtual_path, creator)
