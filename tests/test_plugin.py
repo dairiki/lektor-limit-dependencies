@@ -6,6 +6,7 @@ import sys
 import pytest
 import six
 
+import jinja2
 from lektor.environment import Expression
 
 from lektorlib.testing import assert_no_dependencies
@@ -186,16 +187,20 @@ class Test_deserialize_query(object):
 
 class Test_limit_dependencies(object):
     @pytest.mark.usefixtures('lektor_context')
-    def test(self, query):
+    def test(self, jinja_env, query):
         with assert_no_dependencies(match=r'\A(?!.*@limit-dependencies).'):
-            result = limit_dependencies(query)
+            result = limit_dependencies(jinja_env, query)
         assert list(result) == list(query)
 
-    def test_records_dependency(self, query, lektor_context):
-        limit_dependencies(query)
+    def test_records_dependency(self, jinja_env, query, lektor_context):
+        limit_dependencies(jinja_env, query)
         assert any(
             path.startswith('/@limit-dependencies/')
             for path in lektor_context.referenced_virtual_dependencies.keys())
+
+    def test_returns_undefined(self, jinja_env):
+        result = limit_dependencies(jinja_env, 'not a query')
+        assert jinja2.is_undefined(result)
 
 
 class TestLimitDependenciesPlugin(object):

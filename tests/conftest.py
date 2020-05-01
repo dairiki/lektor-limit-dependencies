@@ -53,3 +53,8 @@ def lektor_build_state(lektor_builder):
 def lektor_context(lektor_pad):
     with lektor.context.Context(pad=lektor_pad) as ctx:
         yield ctx
+
+
+@pytest.fixture
+def jinja_env(lektor_env):
+    return lektor_env.jinja_env

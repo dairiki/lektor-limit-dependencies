@@ -12,6 +12,7 @@ import hashlib
 from operator import itemgetter
 import pickle
 
+import jinja2
 from lektor.context import get_ctx
 from lektor.db import Query
 from lektor.pluginsystem import Plugin
@@ -90,7 +91,13 @@ def deserialize_query(pad, serialized_query):
     return query
 
 
-def limit_dependencies(query):
+@jinja2.environmentfilter
+def limit_dependencies(jinja_env, query):
+    if not isinstance(query, Query):
+        return jinja_env.undefined(
+            "limit_dependencies expected a Query instance, not {!r}"
+            .format(query))
+
     # XXX: We cache the query results in the pad's record cache, so
     # any changes in the query results will not be noticed for the
     # lifetime of the pad.
