@@ -1,5 +1,9 @@
-dist
-build
+*~
 *.pyc
 *.pyo
-*.egg-info
+/dist/
+/build/
+lektor_limit_dependencies.egg-info
+/.tox/
+/htmlcov/
+
