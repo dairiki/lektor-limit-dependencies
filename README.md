@@ -31,7 +31,7 @@ something like to your site base template:
 ```
 
 This is not without drawbacks, however.  To sort the post query by
-date, Lektor iterates through ***all*** of the blogs posts, then sorts
+date, Lektor iterates through ***all*** of the blog’s posts, then sorts
 them.  In so doing, it records all of the blog posts as dependencies
 *of every page on which this most-recent-post query is used*.  If this
 is in the sidebar of every page on your site, *now every page on your
@@ -44,26 +44,26 @@ it should now appear in the most-recent listing.  However, it is not
 true that all pages need to be rebuilt for *any* edit of any post.
 Unfortunately, Lektor’s dependency tracking system is not elaborate
 enough to be able to express details about *how* pages are
-dependendent on other pages; it only records that they *are*
+dependent on other pages; it only records that they *are*
 dependent, so Lektor has no option but to rebuild everything.
 
 ### A Solution?
 
 This plugin introduces a Jinja filter, `limit_dependencies`.  It
-expects, as input, a Lektor query instance.  It iterates through the
+expects, as input, a Lektor [query][] instance.  It iterates through the
 input query, and returns a new query instance which will yield the
-same results.  While it is doing its iteration, it, essentially,
+same results.  While it is doing its iteration, it — essentially —
 monkey-patches Lektor’s dependency tracking machinery to prevent it
 from recording any dependencies.
 
 At the end, `limit_dependencies` records one dependency on a [virtual
 source object][virtual] which depends only on the sequence of the identities
 of the records in the query result.  (Lektor provides a means by which
-virtual source objects can report checksums.  If they do, the
+virtual source objects can report checksums.  The
 dependency tracking mechanism records those checksums, and will
 trigger a rebuild should the checksum change.  `Limit_dependencies`
 generates a virtual source object whose checksum depends on the
-sequence identities in the query result.)
+sequence of identities in the query result.)
 
 In the above example, this is exactly what we want.  We only want to
 trigger a rebuild if the order or composition of the most-recent three
@@ -90,6 +90,9 @@ of the three most recent posts.
 
 [virtual]: <https://www.getlektor.com/docs/api/db/obj/#virtual-source-objects>
     "Lektor documentation on Virtual Source Objects"
+
+[query]: <https://www.getlektor.com/docs/api/db/query/>
+    "Lektor documentation on the Query class"
 
 ## Installation
 
