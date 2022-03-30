@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 import shutil
 
 import pytest
-from six import text_type
 
 from lektor.builder import Builder
 from lektor.db import Database
@@ -15,7 +13,7 @@ from lektor_limit_dependencies import LimitDependenciesPlugin
 def site_path(site_path, tmp_path_factory):
     tmp_path = tmp_path_factory.mktemp('test-site')
     tmp_site_path = tmp_path / 'site'
-    shutil.copytree(text_type(site_path), text_type(tmp_site_path))
+    shutil.copytree(str(site_path), str(tmp_site_path))
     return tmp_site_path
 
 
@@ -25,7 +23,7 @@ def touch_content(site_path):
         contents_lr = site_path / 'content' / path.lstrip('/') / 'contents.lr'
         assert contents_lr.is_file()
         with contents_lr.open(mode='at') as f:
-            f.write(u"\n")
+            f.write("\n")
     return touch_content
 
 
@@ -44,7 +42,7 @@ def build_all(lektor_env, tmp_path_factory):
     output_path = tmp_path_factory.mktemp('output')
 
     def build_all():
-        builder = Builder(db.new_pad(), text_type(output_path))
+        builder = Builder(db.new_pad(), str(output_path))
         return builder.build_all()
     return build_all
 
@@ -99,7 +97,7 @@ class Reporter(BufferReporter):
             artifact.artifact_name, exc_info[1]))
 
 
-class TestFunctional(object):
+class TestFunctional:
 
     @pytest.fixture
     def built_site(self, lektor_env, build_all):

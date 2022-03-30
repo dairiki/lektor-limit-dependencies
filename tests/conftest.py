@@ -1,13 +1,6 @@
-# -*- coding: utf-8 -*-
-
-try:
-    from pathlib import Path
-except ImportError:
-    # python < 3.4
-    from pathlib2 import Path
+from pathlib import Path
 
 import pytest
-from six import text_type
 
 import lektor.builder
 import lektor.context
@@ -25,7 +18,7 @@ def site_path():
 
 @pytest.fixture
 def lektor_project(site_path):
-    return lektor.project.Project.from_path(text_type(site_path))
+    return lektor.project.Project.from_path(str(site_path))
 
 
 @pytest.fixture

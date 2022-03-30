@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
 from base64 import urlsafe_b64encode
 import pickle
-import sys
 
 import pytest
-import six
 
 import jinja2
 from lektor.environment import Expression
@@ -57,7 +54,7 @@ def test_sanity(query, expected_result_ids):
     assert result_ids == tuple(expected_result_ids)
 
 
-class TestQueryResults(object):
+class TestQueryResults:
     @pytest.fixture
     def id_(self):
         return "query-id"
@@ -70,11 +67,11 @@ class TestQueryResults(object):
         assert query_results.record is lektor_pad.root
 
     def test_path(self, query_results, id_):
-        assert query_results.path == "/@{}/{}".format(VIRTUAL_PATH_PREFIX, id_)
+        assert query_results.path == f"/@{VIRTUAL_PATH_PREFIX}/{id_}"
 
     def test_get_checksum(self, query_results):
         checksum = query_results.get_checksum(path_cache='ignored')
-        assert checksum and isinstance(checksum, six.string_types)
+        assert checksum and isinstance(checksum, str)
 
     @pytest.mark.usefixtures('lektor_context')
     def test_query_result_ids(self, query_results, query, expected_result_ids):
@@ -86,9 +83,9 @@ class TestQueryResults(object):
 @pytest.mark.parametrize(('data', 'checksum'), [
     ((),
      "5d460934f4a194c28ce73ada3b56d2e025d5c47c"),
-    ((u'a/b',),
+    (('a/b',),
      "224e70bd496625246063b11ffd5fab19e0fc763d"),
-    ((u'a', u'b'),
+    (('a', 'b'),
      "ceb654484413126293abed9693ffe738220afcca"),
     ])
 def test__compute_checksum(data, checksum):
@@ -106,7 +103,7 @@ def assert_queries_equal(query, other_query):
     assert ignore_pad(query) == ignore_pad(other_query)
 
 
-class Test_resolve_virtual_path(object):
+class Test_resolve_virtual_path:
     def test_resolves(self, query, lektor_pad):
         record = lektor_pad.root
         id_ = serialize_query(query)
@@ -151,16 +148,12 @@ class Test_resolve_virtual_path(object):
 
 def test_serialize_query(query, query_expr, lektor_env):
     serialized = serialize_query(query)
-    assert isinstance(serialized, six.string_types)
+    assert isinstance(serialized, str)
     assert len(serialized) < 1024
     print("query {!r} => serialized to length {:d}"
           .format(query_expr, len(serialized)))
 
 
-@pytest.mark.xfail(
-    sys.version_info < (3, 6),
-    reason="This fails sometimes due to non-determinstic ordering "
-    "of object dict keys by pickle.dumps().")
 def test_serialize_query_is_deterministic(query, query_expr, lektor_env):
     serialized = serialize_query(query)
     for n in range(10):
@@ -169,7 +162,7 @@ def test_serialize_query_is_deterministic(query, query_expr, lektor_env):
         assert serialize_query(q2) == serialized
 
 
-class Test_deserialize_query(object):
+class Test_deserialize_query:
     def test_deserialize_query(self, query, query_expr, lektor_env):
         new_pad = lektor_env.new_pad()
         query_clone = deserialize_query(new_pad, serialize_query(query))
@@ -185,7 +178,7 @@ class Test_deserialize_query(object):
         assert deserialize_query(lektor_pad, serialized_nonquery) is None
 
 
-class Test_limit_dependencies(object):
+class Test_limit_dependencies:
     @pytest.mark.usefixtures('lektor_context')
     def test(self, jinja_env, query):
         with assert_no_dependencies(match=r'\A(?!.*@limit-dependencies).'):
@@ -203,7 +196,7 @@ class Test_limit_dependencies(object):
         assert jinja2.is_undefined(result)
 
 
-class TestLimitDependenciesPlugin(object):
+class TestLimitDependenciesPlugin:
     @pytest.fixture
     def plugin(self, lektor_env):
         return LimitDependenciesPlugin(lektor_env, 'limit-dependencies')

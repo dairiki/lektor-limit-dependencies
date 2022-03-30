@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Filter to limit lektor dependency generation by filtered queries.
 
 """
@@ -31,13 +30,13 @@ class QueryResults(VirtualSourceObject):
     def __init__(self, query, id_):
         with disable_dependency_recording():
             root = query.pad.root
-        super(QueryResults, self).__init__(root)
+        super().__init__(root)
         self.query = query
         self._id = id_
 
     @cached_property
     def path(self):
-        return "/@{}/{}".format(VIRTUAL_PATH_PREFIX, self._id)
+        return f"/@{VIRTUAL_PATH_PREFIX}/{self._id}"
 
     def get_checksum(self, path_cache):
         return _compute_checksum(self.query_result_ids)
@@ -59,7 +58,7 @@ def resolve_virtual_path(record, pieces):
             query = deserialize_query(pad, pieces[0])
             if query is not None:
                 return QueryResults(query, id_=pieces[0])
-        virtual_path = '{}/{}'.format(VIRTUAL_PATH_PREFIX, pieces[0])
+        virtual_path = f'{VIRTUAL_PATH_PREFIX}/{pieces[0]}'
         return get_or_create_virtual(pad.root, virtual_path, creator)
 
 
@@ -91,7 +90,7 @@ def deserialize_query(pad, serialized_query):
     return query
 
 
-@jinja2.environmentfilter
+@jinja2.pass_environment
 def limit_dependencies(jinja_env, query):
     if not isinstance(query, Query):
         return jinja_env.undefined(
@@ -112,7 +111,7 @@ def limit_dependencies(jinja_env, query):
         return QueryResults(query, id_)
     with disable_dependency_recording():
         root = query.pad.root
-    virtual_path = '{}/{}'.format(VIRTUAL_PATH_PREFIX, id_)
+    virtual_path = f'{VIRTUAL_PATH_PREFIX}/{id_}'
     results = get_or_create_virtual(root, virtual_path, creator)
 
     ctx = get_ctx()
@@ -125,7 +124,7 @@ def limit_dependencies(jinja_env, query):
 
 class LimitDependenciesPlugin(Plugin):
     name = 'Limit Dependencies'
-    description = u'Lektor plugin to limit dependencies created by queries.'
+    description = 'Lektor plugin to limit dependencies created by queries.'
 
     def on_setup_env(self, **extra):
         env = self.env
