@@ -1,6 +1,8 @@
 ## Changelog
 
-### Release 1.0.0 (not released)
+### Release 1.0.0 (2023-01-31)
+
+No code changes from 1.0.0b1.
 
 Test under python 3.11.
 
