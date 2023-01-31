@@ -1,5 +1,9 @@
 ## Changelog
 
+### Release 1.0.0 (not released)
+
+Test under python 3.11.
+
 ### Release 1.0.0b1 (2021-03-29)
 
 Drop support for python<3.7 and lektor<3.3.
