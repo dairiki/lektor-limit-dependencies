@@ -1,3 +1,8 @@
+exclude .gitignore
+prune .github
+
+# The rest of this is redundant, given our use of setuptools_scm.
+# https://github.com/pypa/setuptools_scm#setuptools_scm
 include tox.ini
 include LICENSE CHANGES.md
 recursive-include tests *.py *.lr *.ini *.html *.css *.lektorproject

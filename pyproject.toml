@@ -1,5 +1,45 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "setuptools_scm[toml]>=3.4"]
+requires = ["setuptools>=67", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "lektor-limit-dependencies"
+description = "Lektor plugin to limit dependencies created by queries"
+authors = [
+    {name = "Jeff Dairiki", email = "dairiki@dairiki.org"},
+]
+keywords = ["Lektor plugin"]
+urls = { Homepage = "https://github.com/dairiki/lektor-limit-dependencies" }
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Plugins",
+    "Environment :: Web Environment",
+    "Framework :: Lektor",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Text Processing",
+]
+
+dynamic = ["version", "readme"]
+
+requires-python = ">=3.7"
+dependencies = [
+    "lektorlib",
+    "jinja2 >=3.0.0",
+]
+
+[project.entry-points."lektor.plugins"]
+limit-dependencies = "lektor_limit_dependencies:LimitDependenciesPlugin"
+
+[tool.setuptools.dynamic.readme]
+file = ["README.md", "CHANGES.md"]
+content-type = "text/markdown"
 
 [tool.setuptools_scm]
