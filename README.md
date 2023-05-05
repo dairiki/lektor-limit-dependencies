@@ -4,7 +4,7 @@
 [![PyPI Supported Python Versions](https://img.shields.io/pypi/pyversions/lektor-limit-dependencies.svg)](https://pypi.python.org/pypi/lektor-limit-dependencies/)
 [![GitHub license](https://img.shields.io/github/license/dairiki/lektor-limit-dependencies)](https://github.com/dairiki/lektor-limit-dependencies/blob/master/LICENSE)
 [![GitHub Actions (Tests)](https://github.com/dairiki/lektor-limit-dependencies/workflows/Tests/badge.svg)](https://github.com/dairiki/lektor-limit-dependencies)
-
+[![Trackgit Views](https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lhauo6e4yt69l7t122cl)](https://trackgit.com)
 
 This is an experimental [Lektor][] plugin which aims to provide tools (or,
 at least, a tool) to help keep Lektor’s dependency tracking under
